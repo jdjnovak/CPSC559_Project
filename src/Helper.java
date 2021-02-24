@@ -5,6 +5,11 @@ import java.util.Scanner;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import java.net.InetAddress;
+import java.net.URL;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 /*
   Helper.java
   - This class is responsible for defining all helper functions
@@ -72,4 +77,37 @@ public class Helper {
         }
         return content;
     }
+
+	/* params: byte array
+	     Returns a string from the given byte array
+	   returns: string
+	 */
+	public static String data(byte[] a) {
+		if (a == null) return null;
+		StringBuilder returnString = new StringBuilder();
+		int i = 0;
+		while (a[i] != 0) {
+			returnString.append((char) a[i]);
+			i++;
+		}
+		return returnString.toString();
+	}
+
+	/* params: none
+         Get the public IP
+       returns: int
+	 */
+	public static String getPublicIP() {
+		// Got this from: https://geeksforgeeks.org/java-program-find-ip-address-computer/
+        String address = "";
+		try {
+			URL url = new URL("http://bot.whatismyipaddress.com");
+            BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+			address = br.readLine().trim();
+			return address;
+		} catch (Exception e) {
+			Main.log.Warn("Failed to retrieve public IP");
+			return "";
+		}
+	}
 }

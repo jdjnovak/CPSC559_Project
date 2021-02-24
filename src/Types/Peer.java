@@ -13,22 +13,22 @@ public class Peer {
 	}
 
 	// Return Peer Address
-	public getAddress() {
+	public String getAddress() {
 		return this.ADDR;
 	}
 
 	// Return Peer Port
-	public getPort() {
+	public int getPort() {
 		return this.PORT;
 	}
 
 	// Return Peer Source Address
-	public getSourceAddress() {
+	public String getSourceAddress() {
 		return this.SRC_ADDR;
 	}
 
 	// Return Peer Timestamp
-	public getTimestamp() {
+	public String getTimestamp() {
 		return this.TIMESTAMP;
 	}
 

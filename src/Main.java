@@ -1,11 +1,12 @@
-import java.concurrent.Executors;
-import java.concurrent.ExecutorService;
-import java.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Main {
 
 	static String IP = "localhost";
-	static final int PORT = 55901;
+	static final int PORT = 55921;
+	static final int UDP_PORT = 36636;
 	static final String TEAMNAME = "Team Thunder Badger";
 
 	// Thread globals
@@ -15,7 +16,7 @@ public class Main {
 	public static Logger log;
 
 	// Thread Pool Object - Not to be accesible outside this class
-	private ExecutorService executor;
+	private static ExecutorService executor;
 	
 	public static void main(String[] args) {
 		executor = Executors.newFixedThreadPool(MAX_THEAD_COUNT);
@@ -25,10 +26,15 @@ public class Main {
 		// Begin with TCP client for peer onboarding
 		TCPClient client = new TCPClient(IP, PORT, TEAMNAME);
 		client.Start();
+		UDPClient udpclient = new UDPClient();
 
 		// Begin UDP client for duration as peer
 		// Thread out necessary processes
 
 		log.Log("Shutting down.");
+	}
+
+	public static int getUDPPort() {
+		return UDP_PORT;
 	}
 }

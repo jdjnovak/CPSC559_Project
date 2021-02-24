@@ -28,7 +28,7 @@ public class TCPClient {
        Default Constructor
          - Default constructor looks for a registry running on localhost
     */
-    public Client() {
+    public TCPClient() {
         this.SERVER_IP = "localhost";
         this.SERVER_PORT = 55921;
         this.TEAMNAME = "Default";
@@ -42,7 +42,7 @@ public class TCPClient {
        Parametered Constructor
          - Specifies the IP, PORT, and Teamname for the client
      */
-    public Client(String ip, int port, String team) {
+    public TCPClient(String ip, int port, String team) {
         this.SERVER_IP = ip;
         this.SERVER_PORT = port;
         this.TEAMNAME = team;
@@ -137,7 +137,10 @@ public class TCPClient {
                     + getPeers()                                            // recorded peer info
                     + PEERS_SOURCES.size() + "\n"                           // # of sources
                     + getPeersAndTimes();                                   // Print peer amount in each source followed by their peers and timestamp
-        }
+        } else if (recv.equals("get location")) {
+            return Helper.getPublicIP() + ":" + Main.UDP_PORT + "\n";
+		}
+
         return "ERROR: Unrecognized code";                                  // return error string is request not recognized
     }
 
