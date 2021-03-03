@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,15 +24,22 @@ public class Main {
 		log = new Logger(2);
 		log.Log("Starting logger with debug level " + log.getDebugLevel());
 
-		// Begin with TCP client for peer onboarding
-		TCPClient client = new TCPClient(IP, PORT, TEAMNAME);
-		client.Start();
-		UDPClient udpclient = new UDPClient();
+ 		try {
+     		// Begin with TCP client for peer onboarding
+     		TCPClient client = new TCPClient(IP, PORT, TEAMNAME);
+     		client.Start();
+     
+     		// Begin UDP client for duration as peer
+     		UDPClient udpclient = new UDPClient();
+     		udpclient.Start();
+     
+ 		    log.Log("Shutting down.");
 
-		// Begin UDP client for duration as peer
-		// Thread out necessary processes
-
-		log.Log("Shutting down.");
+		} catch (IOException io) {
+			log.Warn("Main - An IO exception occured");
+		} catch (Exception e) {
+			log.Warn("Main - An exception occured");
+		}
 	}
 
 	public static int getUDPPort() {

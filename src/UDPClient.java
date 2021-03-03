@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
+import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -15,12 +16,14 @@ public class UDPClient {
 	private boolean DONE;
 
 	public UDPClient() throws SocketException {
-		this.SOCKET = new DatagramSocket(0);
+		this.SOCKET = new DatagramSocket(Main.UDP_PORT);
 		this.DONE = false;
 	}
 
-	public void start() throws IOException {
+	public void Start() throws IOException {
+		Main.log.Log("Starting UDP client");
 		executor = Executors.newFixedThreadPool(POOL_SIZE);
+		createCommandLineThread();
 		DatagramPacket pack = null;
 		byte[] recv = new byte[65535];
 		while (!this.DONE) {
@@ -40,8 +43,34 @@ public class UDPClient {
 			    recv = new byte[65535];
 			} catch (SocketException se) {
 				Main.log.Warn("A socket exception has occured.");
+			} catch (IOException io) {
+				Main.log.Warn("An IO exception has occured.");
 			}
 		}
+	}
+
+	private void createCommandLineThread() {
+		Thread t = new Thread(new Runnable() {
+		    @Override
+			public void run() {
+				Scanner keyboard = new Scanner(System.in);
+				while (!getDone()) {
+					String command = keyboard.nextLine().trim();
+					// Main.log.Log("COMMAND RECIEVED: " + command);
+					if (command.equalsIgnoreCase("snip")) {
+						Main.log.Prompt("Enter a snip: ");
+						String content = keyboard.nextLine().trim();
+						Main.log.Log("SNIP RECV'D: " + content);
+						// Send throughout the peers with the same DatagramSocket
+					}
+				}
+			}
+		});
+		t.start();
+	}
+
+	public boolean getDone() {
+		return this.DONE;
 	}
 
 	public void done() {

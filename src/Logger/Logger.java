@@ -60,13 +60,22 @@ public class Logger {
             System.out.println(ANSI_BLUE + printPrefix() + ANSI_GREEN + "(LOG) " + ANSI_RESET + message);
     }
 
-    /* params: none
+    /* params: string
          Prints a warning log message to the console 
        returns: string
      */
     public void Warn(String message) {
         if (this.DEBUG_LEVEL > 0)
             System.out.println(ANSI_BLUE + printPrefix() + ANSI_GREEN + "(WARN) " + ANSI_RED + message + ANSI_RESET);
+    }
+
+    /* params: string
+	     Prints a line for a prompt
+       returns: string
+     */
+    public void Prompt(String message) {
+        if (this.DEBUG_LEVEL > 0)
+            System.out.print(ANSI_BLUE + printPrefix() + ANSI_GREEN + "(PROMPT) " + ANSI_YELLOW + message + ANSI_RESET);
     }
 
     /* params: none

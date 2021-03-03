@@ -57,7 +57,7 @@ public class TCPClient {
        returns: void
      */
     public void Start() {
-        Main.log.Log("Starting client");
+        Main.log.Log("Starting TCP client");
         try {
             // Connect to the registry and notify user on CLI
             Socket socket = new Socket(SERVER_IP, SERVER_PORT);
