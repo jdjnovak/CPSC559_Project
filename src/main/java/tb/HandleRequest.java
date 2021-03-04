@@ -2,7 +2,7 @@ package tb;
 
 import java.net.*;
 
-public class HandleRequest implements Runnable {
+public class HandleRequest {
   private String VERB;
   private String NOUN;
 
@@ -11,27 +11,26 @@ public class HandleRequest implements Runnable {
     this.NOUN = n;
   }
 
-  @Override
-  public void run() {
+  public void Handle() {
     tb.App.log.Log("HandleRequest - Running");
     if (this.VERB.equals("snip")) {
-      tb.App.log.Log("SNIP");
+      HandleSnip(this.NOUN);
     } else if (this.VERB.equals("peer")) {
-      tb.App.log.Log("PEER");
+      HandlePeer(this.NOUN);
     } else if (this.VERB.equals("stop")) {
-      tb.App.log.Log("STOP");
+      HandleStop();
     }
   }
 
-  public static void HandleSnip() {
-    System.out.println("SNIP");
+  public static void HandleSnip(String n) {
+    tb.App.log.Log("SNIP: " + n);
   }
 
   public static void HandleStop() {
-    System.out.println("STOP");
+    tb.App.log.Log("STOP");
   }
 
-  public static void HandlePeer() {
-    System.out.println("PEER");
+  public static void HandlePeer(String n) {
+    tb.App.log.Log("PEER: " + n);
   }
 }

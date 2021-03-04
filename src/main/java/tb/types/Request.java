@@ -1,6 +1,6 @@
 package tb.types;
 
-public class Request {
+public class Request implements Runnable {
   private String VERB;
   private String NOUN;
 
@@ -16,19 +16,18 @@ public class Request {
     this.NOUN = n;
   }
 
-  /*
-  public void Handle() {
-  	switch (this.VERB) {
-  	case "snip":
-  		HandleRequest.HandleSnip(this.NOUN);
-  		break;
-  	case "stop":
-  		HandleRequest.HandleStop();
-  		break;
-  	case "peer":
-  		HandleRequest.HandlePeer(this.NOUN);
-  		break;
-  	}
+  @Override
+  public void run() {
+    switch (this.VERB) {
+      case "snip":
+        tb.HandleRequest.HandleSnip(this.NOUN);
+        break;
+      case "stop":
+        tb.HandleRequest.HandleStop();
+        break;
+      case "peer":
+        tb.HandleRequest.HandlePeer(this.NOUN);
+        break;
+    }
   }
-  */
 }

@@ -40,7 +40,6 @@ public class UDPClient implements Runnable {
         String req_string = Helper.data(recv);
         String[] parsed = parsePacket(req_string);
         // String[] split = req_string.split(" ");
-        Request req;
         /*
               if (split.length > 1) {
                 req = new Request(split[0], split[1]);
@@ -50,7 +49,7 @@ public class UDPClient implements Runnable {
               }
         */
         // executor.execute(new HandleRequest(split[0], split[1]));
-        executor.execute(new HandleRequest(parsed[0], parsed[1]));
+        executor.execute(new Request(parsed[0], parsed[1]));
         recv = new byte[65535];
       } catch (SocketException se) {
         tb.App.log.Warn("A socket exception has occured.");
