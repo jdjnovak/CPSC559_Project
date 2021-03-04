@@ -10,6 +10,7 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import tb.types.Peer;
+import tb.types.Request;
 
 public class UDPClient {
   // private static String IP;
