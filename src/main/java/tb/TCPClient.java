@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.*;
 import java.util.ArrayList;
+import tb.types.Peer;
 
 /*
  Client.java
@@ -85,7 +86,15 @@ public class TCPClient {
             if (plist.contains(peerLine)) {
               tb.App.log.Log("Peer " + peerLine + " already in peer list.");
             } else {
-              plist.add(peerLine); // add peer info to list
+              // plist.add(peerLine); // add peer info to list
+              String[] ipPort = peerLine.trim().split(":");
+              Peer p =
+                  new Peer(
+                      ipPort[0],
+                      Integer.parseInt(ipPort[1]),
+                      SERVER_IP + ":" + SERVER_PORT,
+                      Helper.getFormattedDate());
+              tb.App.addToPeers(p);
             }
           }
           tb.TCPClient.PEER_UPDATED_TIMESTAMP = Helper.getFormattedDate();
@@ -100,7 +109,7 @@ public class TCPClient {
       socket.close();
     } catch (Exception e) {
       // Catch all exceptions
-      tb.App.log.Warn("Error: " + e);
+      tb.App.log.Warn("Error: " + e.getStackTrace()[0]);
     }
   }
 
@@ -128,7 +137,7 @@ public class TCPClient {
       // Tb.TCPClient line will need to be adjusted based on the files and
       // how the project structure is defined
       return "Java\n"
-          + tb.Helper.printAllFiles("../src/")
+          + Helper.printAllFiles("src/main/java/tb/")
           + "\n...\n"; // navigate to source code folder and get file contents
     } else if (recv.equals("get report")) { // if serer requests a report
       int numberOfPeers = countPeers(); // return string formatted as server expects

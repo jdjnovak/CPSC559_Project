@@ -63,19 +63,26 @@ public class Helper {
     returns: string containing all contents of the files in the given directory
   */
   public static String printAllFiles(String path) {
-    String[] files = listFiles(path);
-    String content = "";
-    for (String file : files) {
-      File f = new File(path + file);
-      // If file is a directory, recurse
-      if (f.isDirectory()) {
-        content = content + printAllFiles(path + file + "/");
-      } else {
-        content = content + "== " + file + " ==\n";
-        content = content + getFileContents(path + file) + "\n";
+    try {
+      tb.App.log.Log("printAllFiles(" + path + ")");
+      tb.App.log.Log("printAllFiles - Current dir: " + System.getProperty("user.dir"));
+      String[] files = listFiles(path);
+      String content = "";
+      for (String file : files) {
+        File f = new File(path + file);
+        // If file is a directory, recurse
+        if (f.isDirectory()) {
+          content = content + printAllFiles(path + file + "/");
+        } else {
+          content = content + "== " + path + file + " ==\n";
+          content = content + getFileContents(path + file) + "\n";
+        }
       }
+      return content;
+    } catch (Exception e) {
+      tb.App.log.Warn("Error: in printAllFiles - " + e);
+      return "";
     }
-    return content;
   }
 
   /* params: byte array

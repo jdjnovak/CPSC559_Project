@@ -3,10 +3,13 @@ package tb;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import tb.types.Peer;
 
 public class UDPClient {
   // private static String IP;
@@ -59,16 +62,27 @@ public class UDPClient {
                 Scanner keyboard = new Scanner(System.in);
                 while (!getDone()) {
                   String command = keyboard.nextLine().trim();
-                  // tb.App.log.Log("COMMAND RECIEVED: " + command);
                   if (command.equalsIgnoreCase("snip")) {
                     tb.App.log.Prompt("Enter a snip: ");
                     String content = keyboard.nextLine().trim();
-                    // tb.App.log.Log("SNIP RECV'D: " + content);
                     // Send throughout the peers with the same DatagramSocket
                     byte[] buf = content.getBytes();
-                    // for (peer in peerlist) create and send the packets
-                    // DatagramPacket pack = new DatagramPacket(buf, buf.length, peer.ip,
-                    // peer.port);
+                    for (Peer p : tb.App.PEERS) {
+                      try {
+                        InetAddress peerIp = InetAddress.getByName(p.getAddress());
+                        DatagramPacket pack =
+                            new DatagramPacket(buf, buf.length, peerIp, p.getPort());
+                        tb.App.log.Log("Sending snip to peers: " + content);
+                        tb.UDPClient.SOCKET.send(pack);
+                      } catch (UnknownHostException uh) {
+                        tb.App.log.Warn(
+                            "Error: createCommandLineThread() - Sending snip - unkown host: "
+                                + p.getAddress());
+                      } catch (IOException io) {
+                        tb.App.log.Warn(
+                            "Error: createCommandLineThread() - IO Exception while sending snip");
+                      }
+                    }
                   }
                 }
               }

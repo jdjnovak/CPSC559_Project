@@ -1,9 +1,11 @@
 package tb;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import tb.logging.Logger;
+import tb.types.Peer;
 
 public class App {
 
@@ -11,6 +13,8 @@ public class App {
   static final int PORT = 55921;
   static final int UDP_PORT = 36636;
   static final String TEAMNAME = "Team Thunder Badger";
+
+  static ArrayList<Peer> PEERS = new ArrayList<Peer>();
 
   // Thread globals
   public static final int MAX_THEAD_COUNT = 20;
@@ -46,5 +50,13 @@ public class App {
 
   public static int getUDPPort() {
     return UDP_PORT;
+  }
+
+  public static void addToPeers(Peer p) {
+    PEERS.add(p);
+  }
+
+  public static ArrayList<Peer> getPeerlist() {
+    return PEERS;
   }
 }
