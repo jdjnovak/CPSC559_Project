@@ -36,6 +36,7 @@ public class UDPClient implements Runnable {
       try {
         pack = new DatagramPacket(recv, recv.length);
         tb.UDPClient.SOCKET.receive(pack);
+        tb.App.log.Log("DEBUG - pkt from " + pack.getAddress().toString());
 
         String req_string = Helper.data(recv);
         String[] parsed = parsePacket(req_string);
@@ -111,6 +112,7 @@ public class UDPClient implements Runnable {
 
   public static void sendPacket(DatagramPacket pk) {
     try {
+      tb.App.log.Log("Sending packet: " + pk.getAddress().toString());
       SOCKET.send(pk);
     } catch (IOException io) {
       tb.App.log.Warn("Error: UDPClient - sendPacket - IOException occured");
