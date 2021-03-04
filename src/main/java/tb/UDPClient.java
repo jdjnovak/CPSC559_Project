@@ -40,7 +40,9 @@ public class UDPClient implements Runnable {
 
         String req_string = Helper.data(recv);
         String[] parsed = parsePacket(req_string);
-        executor.execute(new Request(parsed[0], parsed[1]));
+        executor.execute(
+            new Request(
+                parsed[0], parsed[1], pack.getAddress().toString().split("/")[1], pack.getPort()));
         recv = new byte[65535];
       } catch (SocketException se) {
         tb.App.log.Warn("A socket exception has occured.");

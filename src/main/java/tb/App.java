@@ -1,9 +1,10 @@
 package tb;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import tb.logging.Logger;
 import tb.types.Peer;
 
@@ -16,17 +17,16 @@ public class App {
   static final int UDP_PORT = 36636;
   static final String TEAMNAME = "Team Thunder Badger";
 
-  static ArrayList<Peer> PEERS = new ArrayList<Peer>();
+  static CopyOnWriteArrayList<Peer> PEERS = new CopyOnWriteArrayList<Peer>();
+  static CopyOnWriteArrayList<Peer> ALL_PEERS = new CopyOnWriteArrayList<Peer>();
   static int SNIP_TIMESTAMP = 0; // For snip timings
 
   // Thread globals
   public static final int MAX_THEAD_COUNT = 20;
+  private static ExecutorService executor;
 
   // Logging object
   public static Logger log;
-
-  // Thread Pool Object - Not to be accesible outside this class
-  private static ExecutorService executor;
 
   public static void main(String[] args) {
     executor = Executors.newFixedThreadPool(MAX_THEAD_COUNT);
@@ -39,12 +39,16 @@ public class App {
       client.Start();
 
       // Begin UDP client for duration as peer
-      // UDPClient udpclient = new UDPClient();
-      // udpclient.Start();
       executor.execute(new UDPClient());
       executor.execute(new PeerClient());
 
       executor.shutdown();
+      try {
+        executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+      } catch (InterruptedException ie) {
+        log.Warn("Error: App - main - InterruptedException on awaitTermination");
+      }
+
       log.Log("Shutting down.");
 
     } catch (IOException io) {
@@ -59,10 +63,35 @@ public class App {
   }
 
   public static void addToPeers(Peer p) {
-    PEERS.add(p);
+    ALL_PEERS.add(p);
+    if (checkInPeers(p)) {
+      replacePeer(p);
+    } else {
+      PEERS.add(p);
+    }
   }
 
-  public static ArrayList<Peer> getPeerlist() {
+  private static void replacePeer(Peer p) {
+    for (Peer q : PEERS) {
+      if (q.getAddress().equals(p.getAddress()) && q.getPort() == p.getPort()) {
+        PEERS.remove(q);
+        PEERS.add(p);
+        break;
+      }
+    }
+  }
+
+  private static boolean checkInPeers(Peer p) {
+    boolean ret = false;
+    for (Peer q : PEERS) {
+      if (q.getAddress().equals(p.getAddress()) && q.getPort() == p.getPort()) {
+        ret = true;
+      }
+    }
+    return ret;
+  }
+
+  public static CopyOnWriteArrayList<Peer> getPeerlist() {
     return PEERS;
   }
 

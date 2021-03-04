@@ -1,26 +1,21 @@
 package tb;
 
 import java.net.*;
+import tb.types.Peer;
 
 public class HandleRequest {
-  private String VERB;
-  private String NOUN;
-
-  public HandleRequest(String v, String n) {
-    this.VERB = v;
-    this.NOUN = n;
-  }
-
+  /*
   public void Handle() {
     tb.App.log.Log("HandleRequest - Running");
     if (this.VERB.equals("snip")) {
       HandleSnip(this.NOUN);
     } else if (this.VERB.equals("peer")) {
-      HandlePeer(this.NOUN);
+      HandlePeer(this.NOUN, );
     } else if (this.VERB.equals("stop")) {
       HandleStop();
     }
   }
+  */
 
   public static void HandleSnip(String n) {
     tb.App.log.Log("SNIP: " + n);
@@ -35,7 +30,11 @@ public class HandleRequest {
     tb.App.log.Log("STOP");
   }
 
-  public static void HandlePeer(String n) {
-    tb.App.log.Log("PEER: " + n);
+  public static void HandlePeer(String n, String a, int p) {
+    // tb.App.log.Log("PEER: " + n);
+    String[] newPeer = n.split(":");
+    Peer np =
+        new Peer(newPeer[0], Integer.parseInt(newPeer[1]), a + ":" + p, Helper.getFormattedDate());
+    tb.App.addToPeers(np);
   }
 }
