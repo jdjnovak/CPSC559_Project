@@ -12,7 +12,7 @@ import java.util.concurrent.Executors;
 import tb.types.Peer;
 import tb.types.Request;
 
-public class UDPClient {
+public class UDPClient implements Runnable {
   // private static String IP;
   private static DatagramSocket SOCKET;
   private static final int POOL_SIZE = 50;
@@ -25,7 +25,8 @@ public class UDPClient {
     this.DONE = false;
   }
 
-  public void Start() throws IOException {
+  @Override
+  public void run() {
     tb.App.log.Log("Starting UDP client");
     executor = Executors.newFixedThreadPool(POOL_SIZE);
     createCommandLineThread();
@@ -87,7 +88,8 @@ public class UDPClient {
                     tb.App.log.Prompt("Enter a snip: ");
                     String content = keyboard.nextLine().trim();
                     // Send throughout the peers with the same DatagramSocket
-                    byte[] buf = content.getBytes();
+                    String total_content = "snip" + tb.App.getSnipTimestamp() + " " + content;
+                    byte[] buf = total_content.getBytes();
                     for (Peer p : tb.App.PEERS) {
                       try {
                         InetAddress peerIp = InetAddress.getByName(p.getAddress());

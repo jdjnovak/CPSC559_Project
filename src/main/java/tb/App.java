@@ -39,9 +39,11 @@ public class App {
       client.Start();
 
       // Begin UDP client for duration as peer
-      UDPClient udpclient = new UDPClient();
-      udpclient.Start();
+      // UDPClient udpclient = new UDPClient();
+      // udpclient.Start();
+      executor.execute(new UDPClient());
 
+      executor.shutdown();
       log.Log("Shutting down.");
 
     } catch (IOException io) {
