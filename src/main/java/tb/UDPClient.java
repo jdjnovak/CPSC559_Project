@@ -115,6 +115,14 @@ public class UDPClient implements Runnable {
     t.start();
   }
 
+  public static void sendPacket(DatagramPacket pk) {
+    try {
+      SOCKET.send(pk);
+    } catch (IOException io) {
+      tb.App.log.Warn("Error: UDPClient - sendPacket - IOException occured");
+    }
+  }
+
   public boolean getDone() {
     return this.DONE;
   }
