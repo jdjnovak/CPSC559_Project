@@ -34,16 +34,21 @@ public class UDPClient {
       try {
         pack = new DatagramPacket(recv, recv.length);
         tb.UDPClient.SOCKET.receive(pack);
+
         String req_string = Helper.data(recv);
-        String[] split = req_string.split(" ");
+        String[] parsed = parsePacket(req_string);
+        // String[] split = req_string.split(" ");
         Request req;
-        if (split.length > 1) {
-          req = new Request(split[0], split[1]);
-        } else {
-          // req = new Request(split[0]);
-          this.DONE = true;
-        }
-        executor.execute(new HandleRequest(split[0], split[1]));
+        /*
+              if (split.length > 1) {
+                req = new Request(split[0], split[1]);
+              } else {
+                // req = new Request(split[0]);
+                this.DONE = true;
+              }
+        */
+        // executor.execute(new HandleRequest(split[0], split[1]));
+        executor.execute(new HandleRequest(parsed[0], parsed[1]));
         recv = new byte[65535];
       } catch (SocketException se) {
         tb.App.log.Warn("A socket exception has occured.");
@@ -51,6 +56,18 @@ public class UDPClient {
         tb.App.log.Warn("An IO exception has occured.");
       }
     }
+  }
+
+  private String[] parsePacket(String pck) {
+    String[] parsed = new String[2];
+    if (pck.startsWith("snip")) {
+      parsed[0] = "snip";
+      parsed[1] = pck.substring(4);
+    } else {
+      parsed[0] = "";
+      parsed[1] = "";
+    }
+    return parsed;
   }
 
   private void createCommandLineThread() {
@@ -74,6 +91,8 @@ public class UDPClient {
                             new DatagramPacket(buf, buf.length, peerIp, p.getPort());
                         tb.App.log.Log("Sending snip to peers: " + content);
                         tb.UDPClient.SOCKET.send(pack);
+                        tb.App.incrementSnipTimestamp();
+                        tb.App.log.Log("Timestamp incremented to: " + tb.App.getSnipTimestamp());
                       } catch (UnknownHostException uh) {
                         tb.App.log.Warn(
                             "Error: createCommandLineThread() - Sending snip - unkown host: "

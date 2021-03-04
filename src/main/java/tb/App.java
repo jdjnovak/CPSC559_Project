@@ -9,12 +9,15 @@ import tb.types.Peer;
 
 public class App {
 
-  static String IP = "localhost";
-  static final int PORT = 55921;
+  // static String IP = "localhost";
+  // static final int PORT = 55921;
+  static String IP = "34.212.129.196";
+  static final int PORT = 44444;
   static final int UDP_PORT = 36636;
   static final String TEAMNAME = "Team Thunder Badger";
 
   static ArrayList<Peer> PEERS = new ArrayList<Peer>();
+  static int SNIP_TIMESTAMP = 0; // For snip timings
 
   // Thread globals
   public static final int MAX_THEAD_COUNT = 20;
@@ -58,5 +61,17 @@ public class App {
 
   public static ArrayList<Peer> getPeerlist() {
     return PEERS;
+  }
+
+  public static int getSnipTimestamp() {
+    return SNIP_TIMESTAMP;
+  }
+
+  public static void setSnipTimestamp(int newts) {
+    SNIP_TIMESTAMP = newts;
+  }
+
+  public static void incrementSnipTimestamp() {
+    SNIP_TIMESTAMP++;
   }
 }
