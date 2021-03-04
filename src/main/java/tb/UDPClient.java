@@ -64,6 +64,9 @@ public class UDPClient {
     if (pck.startsWith("snip")) {
       parsed[0] = "snip";
       parsed[1] = pck.substring(4);
+    } else if (pck.startsWith("peer")) {
+      parsed[0] = "peer";
+      parsed[1] = pck.substring(4);
     } else {
       parsed[0] = "";
       parsed[1] = "";

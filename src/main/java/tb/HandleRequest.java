@@ -13,6 +13,7 @@ public class HandleRequest implements Runnable {
 
   @Override
   public void run() {
+    tb.App.log.Log("HandleRequest - Running");
     if (this.VERB.equals("snip")) {
       tb.App.log.Log("SNIP");
     } else if (this.VERB.equals("peer")) {
