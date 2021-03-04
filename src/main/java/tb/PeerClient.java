@@ -26,19 +26,19 @@ public class PeerClient implements Runnable {
   }
 
   private void sendPeerInfo() {
-    tb.App.log.Log("Peer client sending peer information");
+    tb.App.log.Log("Sending Peer Information");
+    int pos = (int) (Math.random() * tb.App.PEERS.size());
     for (Peer p : tb.App.PEERS) {
-      for (Peer p2 : tb.App.PEERS) {
-        try {
-          InetAddress addr = InetAddress.getByName(p.getAddress());
-          String p_info = "peer" + p.getAddress() + ":" + p.getPort();
-          DatagramPacket pk =
-              new DatagramPacket(p_info.getBytes(), p_info.getBytes().length, addr, p.getPort());
-          tb.UDPClient.sendPacket(pk);
-        } catch (UnknownHostException uh) {
-          tb.App.log.Warn(
-              "Error: PeerClient - sendPeerInfo - UnknownHostException occured: " + p.getAddress());
-        }
+      try {
+        InetAddress addr = InetAddress.getByName(p.getAddress());
+        String p_info =
+            "peer" + tb.App.PEERS.get(pos).getAddress() + ":" + tb.App.PEERS.get(pos).getPort();
+        DatagramPacket pk =
+            new DatagramPacket(p_info.getBytes(), p_info.getBytes().length, addr, p.getPort());
+        tb.UDPClient.sendPacket(pk);
+      } catch (UnknownHostException uh) {
+        tb.App.log.Warn(
+            "Error: PeerClient - sendPeerInfo - UnknownHostException occured: " + p.getAddress());
       }
     }
   }
