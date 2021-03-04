@@ -38,7 +38,7 @@ public class UDPClient implements Runnable {
         tb.UDPClient.SOCKET.receive(pack);
 
         String req_string = Helper.data(recv);
-        tb.App.log.Log("Parsing: " + req_string);
+        tb.App.log.Log("Req_string is " + req_string);
         String[] parsed = parsePacket(req_string);
         executor.execute(new Request(parsed[0], parsed[1]));
         recv = new byte[65535];
@@ -52,6 +52,7 @@ public class UDPClient implements Runnable {
 
   private String[] parsePacket(String pck) {
     String[] parsed = new String[2];
+    tb.App.log.Log("Parsing packet: " + pck);
     if (pck.startsWith("snip")) {
       parsed[0] = "snip";
       parsed[1] = pck.substring(4);
