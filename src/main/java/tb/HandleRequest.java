@@ -24,6 +24,11 @@ public class HandleRequest {
 
   public static void HandleSnip(String n) {
     tb.App.log.Log("SNIP: " + n);
+    String[] snipSplit = n.split(" ");
+    int currTS = tb.App.getSnipTimestamp();
+    if (Integer.parseInt(snipSplit[0]) > currTS) {
+      tb.App.setSnipTimestamp(Integer.parseInt(snipSplit[0]));
+    }
   }
 
   public static void HandleStop() {

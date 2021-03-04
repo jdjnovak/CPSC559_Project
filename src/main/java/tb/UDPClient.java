@@ -38,17 +38,8 @@ public class UDPClient implements Runnable {
         tb.UDPClient.SOCKET.receive(pack);
 
         String req_string = Helper.data(recv);
+        tb.App.log.Log("Parsing: " + req_string);
         String[] parsed = parsePacket(req_string);
-        // String[] split = req_string.split(" ");
-        /*
-              if (split.length > 1) {
-                req = new Request(split[0], split[1]);
-              } else {
-                // req = new Request(split[0]);
-                this.DONE = true;
-              }
-        */
-        // executor.execute(new HandleRequest(split[0], split[1]));
         executor.execute(new Request(parsed[0], parsed[1]));
         recv = new byte[65535];
       } catch (SocketException se) {
@@ -106,6 +97,11 @@ public class UDPClient implements Runnable {
                         tb.App.log.Warn(
                             "Error: createCommandLineThread() - IO Exception while sending snip");
                       }
+                    }
+                  } else if (command.equalsIgnoreCase("gimme")) {
+                    tb.App.log.Log("(TESTING) Current Peers:");
+                    for (Peer p : tb.App.PEERS) {
+                      tb.App.log.Log(p.toString());
                     }
                   }
                 }
