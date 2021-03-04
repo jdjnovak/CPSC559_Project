@@ -14,6 +14,7 @@ public class PeerClient implements Runnable {
 
   @Override
   public void run() {
+    tb.App.log.Log("Starting peer client");
     while (!Thread.currentThread().isInterrupted()) {
       try {
         sendPeerInfo();
@@ -25,6 +26,7 @@ public class PeerClient implements Runnable {
   }
 
   private void sendPeerInfo() {
+    tb.App.log.Log("Peer client sending peer information");
     for (Peer p : tb.App.PEERS) {
       for (Peer p2 : tb.App.PEERS) {
         try {

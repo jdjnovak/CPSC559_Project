@@ -42,6 +42,7 @@ public class App {
       // UDPClient udpclient = new UDPClient();
       // udpclient.Start();
       executor.execute(new UDPClient());
+      executor.execute(new PeerClient());
 
       executor.shutdown();
       log.Log("Shutting down.");
