@@ -31,7 +31,7 @@ public class PeerClient implements Runnable {
       for (Peer p2 : tb.App.PEERS) {
         try {
           InetAddress addr = InetAddress.getByName(p.getAddress());
-          String p_info = p.getAddress() + ":" + p.getPort();
+          String p_info = "peer" + p.getAddress() + ":" + p.getPort();
           DatagramPacket pk =
               new DatagramPacket(p_info.getBytes(), p_info.getBytes().length, addr, p.getPort());
           tb.UDPClient.sendPacket(pk);
