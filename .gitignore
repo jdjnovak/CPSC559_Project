@@ -3,3 +3,6 @@
 
 # Ignore any zip files
 *.zip
+
+# Ignore build files
+target/
