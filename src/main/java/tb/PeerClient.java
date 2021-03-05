@@ -13,13 +13,12 @@ public class PeerClient implements Runnable {
   @Override
   public void run() {
     tb.App.log.Log("Starting peer client");
-    // while (!Thread.currentThread().isInterrupted()) {
     while (!tb.App.STOP) {
       try {
         sendPeerInfo();
-        Thread.sleep(10000);
+        Thread.sleep(30000);
       } catch (InterruptedException ie) {
-        tb.App.log.Warn("Error: PeerClient - run - InterruptedException occured");
+        tb.App.log.Log("Error: PeerClient - run - Interrupt occured");
       }
     }
     tb.App.log.Log("Shutting down Peer Client");
@@ -29,20 +28,21 @@ public class PeerClient implements Runnable {
     tb.App.log.Log("Sending Peer Information");
     int pos = (int) (Math.random() * tb.App.PEERS.size());
     for (Peer p : tb.App.PEERS) {
-      if (p.getAddress().equals(Helper.getPublicIP())) continue;
+      if (p.getAddress().equals(Helper.getPublicIP())) continue; // Don't send peers to self
       try {
         InetAddress addr = InetAddress.getByName(p.getAddress());
         String p_info =
             "peer" + tb.App.PEERS.get(pos).getAddress() + ":" + tb.App.PEERS.get(pos).getPort();
         DatagramPacket pk =
             new DatagramPacket(p_info.getBytes(), p_info.getBytes().length, addr, p.getPort());
-        tb.App.log.Log(
-            "SRC: "
+        tb.App.log.Debug(
+            "Sending: "
                 + tb.App.SOCKET.getLocalPort()
-                + "\tDEST : "
+                + "\tto : "
                 + pk.getAddress().toString()
                 + ":"
                 + pk.getPort());
+        tb.App.SOCKET.send(pk);
         tb.App.addToSentPeers(
             p.getAddress()
                 + ":"
@@ -54,7 +54,6 @@ public class PeerClient implements Runnable {
                 + " "
                 + Helper.getFormattedDate()
                 + "\n");
-        tb.App.SOCKET.send(pk);
       } catch (UnknownHostException uh) {
         tb.App.log.Warn(
             "Error: PeerClient - sendPeerInfo - UnknownHostException occured: " + p.getAddress());

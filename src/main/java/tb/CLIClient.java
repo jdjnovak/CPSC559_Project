@@ -8,9 +8,19 @@ import java.util.Scanner;
 import tb.types.Peer;
 import tb.types.Snip;
 
+/*
+ * Class that runs the CLI thread
+ */
 public class CLIClient implements Runnable {
+  /*
+   * Required empty constructor to allow for instantiation
+   */
   public CLIClient() {}
 
+  /* params: none
+   *   Overridden run method for threads
+   * returns: void
+   */
   @Override
   public void run() {
     Scanner keyboard = new Scanner(System.in);
@@ -27,7 +37,8 @@ public class CLIClient implements Runnable {
         String total_content = "snip" + tb.App.getSnipTimestamp() + " " + content;
         byte[] buf = total_content.getBytes();
 
-        tb.App.log.Log("Sending snip to peers: " + content);
+        tb.App.log.Debug("Sending snip to peers: " + content);
+
         // Send throughout the peers with the same DatagramSocket
         for (Peer p : tb.App.PEERS) {
           try {
@@ -46,12 +57,12 @@ public class CLIClient implements Runnable {
             tb.App.log.Warn("Error: createCommandLineThread() - IO Exception while sending snip");
           }
         }
-      } else if (command.equalsIgnoreCase("gimme")) {
+      } else if (command.equalsIgnoreCase("gimme")) { // For debugging purposes: view all peers
         tb.App.log.Debug("Current Peers:");
         for (Peer p : tb.App.PEERS) {
           tb.App.log.Debug(p.toString());
         }
-      } else if (command.equalsIgnoreCase("snops")) {
+      } else if (command.equalsIgnoreCase("snops")) { // For debugging purposes: view all snips
         tb.App.log.Debug("Current Snips:");
         for (Snip s : tb.App.SNIPS) {
           tb.App.log.Debug(s.toString());

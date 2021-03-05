@@ -132,7 +132,6 @@ public class TCPClient {
           + "\n"
           + getSnippets();
     } else if (recv.equals("get location")) {
-      tb.App.log.Warn("SENDING PORT: " + tb.App.UDP_PORT);
       return Helper.getPublicIP() + ":" + tb.App.UDP_PORT + "\n";
     }
 

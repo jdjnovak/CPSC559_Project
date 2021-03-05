@@ -26,31 +26,32 @@ public class Logger {
 
   /*
    * params: none
-   *
-   *
+   *   No parameters constructor
+   * returns: void
    */
   public Logger() {
     this.DEBUG_LEVEL = 1;
   }
 
   /*
-   * params: 
-   * Parameterized Constructor
-   * - Pass in a level to set the logger to
-   * - Levels:
-   *   0 : None
-   *   1 : Errors/Exceptions
-   *   1 : Errors/Exceptions
-   *   3 : All
-  */
+   * params:
+   *   Parameterized Constructor
+   *   - Pass in a level to set the logger to
+   *   - Levels:
+   *     0 : None
+   *     1 : Errors/Exceptions
+   *     2 : General Logging and Errors
+   *     3 : Verbose
+   * returns: void
+   */
   public Logger(int level) {
     this.DEBUG_LEVEL = level;
   }
 
   /* params: none
-      Returns the prefix to be used by the logger
-    returns: string
-  */
+   *   Returns the prefix to be used by the logger
+   * returns: string
+   */
   public String printPrefix() {
     SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     Date date = new Date();
@@ -58,9 +59,9 @@ public class Logger {
   }
 
   /* params: string
-      Prints a log message to the console
-    returns: void
-  */
+   *   Prints a log message to the console
+   * returns: void
+   */
   public void Log(String message) {
     if (this.DEBUG_LEVEL > 1)
       System.out.println(
@@ -78,11 +79,11 @@ public class Logger {
   }
 
   /* params: string
-      Prints a debug message to the console
-    returns: void
-  */
+   *   Prints a debug message to the console
+   * returns: void
+   */
   public void Debug(String message) {
-    if (this.DEBUG_LEVEL > 1)
+    if (this.DEBUG_LEVEL > 2)
       System.out.println(
           "["
               + ANSI_BLUE
@@ -99,9 +100,9 @@ public class Logger {
   }
 
   /* params: string
-      Prints a warning log message to the console
-    returns: string
-  */
+   *   Prints a warning log message to the console
+   * returns: string
+   */
   public void Warn(String message) {
     if (this.DEBUG_LEVEL > 0)
       System.out.println(
@@ -120,9 +121,9 @@ public class Logger {
   }
 
   /* params: string
-   Prints a line for a prompt
-    returns: string
-  */
+   *   Prints a line for a prompt
+   * returns: string
+   */
   public void Prompt(String message) {
     if (this.DEBUG_LEVEL > 0)
       System.out.print(
@@ -141,9 +142,9 @@ public class Logger {
   }
 
   /* params: none
-       Returns current debug level
-     returns: int
-  */
+   *   Returns current debug level
+   * returns: int
+   */
   public int getDebugLevel() {
     return this.DEBUG_LEVEL;
   }

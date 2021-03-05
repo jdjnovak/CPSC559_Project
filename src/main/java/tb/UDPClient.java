@@ -2,7 +2,6 @@ package tb;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.SocketException;
 import tb.types.Request;
 
@@ -18,10 +17,15 @@ public class UDPClient implements Runnable {
       while (!tb.App.STOP) {
         DatagramPacket pack = new DatagramPacket(recv, recv.length);
         tb.App.SOCKET.receive(pack);
-        // tb.App.log.Debug("Packet from " + pack.getAddress().toString());
 
         String req_string = Helper.data(recv);
-		tb.App.log.Debug("REQUEST: " + req_string +"\tFROM: " + pack.getAddress().toString() + ":" + pack.getPort());
+        tb.App.log.Debug(
+            "REQUEST: "
+                + req_string
+                + "\tFROM: "
+                + pack.getAddress().toString()
+                + ":"
+                + pack.getPort());
         String[] parsed = parsePacket(req_string);
         if (parsed[0].equals("stop")) break;
         tb.App.executor.execute(

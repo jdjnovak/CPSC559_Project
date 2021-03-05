@@ -15,11 +15,11 @@ public class Main {
    */
   public static void main(String[] args) {
     parseArgs(args);
-	try {
-    tb.App.start(UDP_PORT, DEBUG_LEVEL);
-	} catch (SocketException se) {
-	  System.out.println("SE");
-	}
+    try {
+      tb.App.start(UDP_PORT, DEBUG_LEVEL);
+    } catch (SocketException se) {
+      System.out.println("Error: cannot create socket on that port.");
+    }
   }
 
   /* params: void
