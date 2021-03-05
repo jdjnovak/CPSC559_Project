@@ -128,7 +128,6 @@ public class TCPClient {
           + getRecvPeers()
 		  + tb.App.SENT_PEERS.size()
 		  + getSentPeers()
-          + "\n"
           + tb.App.SNIPS.size()
           + "\n"
           + getSnippets();
@@ -196,7 +195,7 @@ public class TCPClient {
   }
    
   /* params: none
-   *   Returns the initial peers, <IP>:<PORT>, separated by newlines
+   *   Returns the peers sent via PeerClient, <IP>:<PORT>, separated by newlines
    * returns: String
    */
   public static String getSentPeers() {

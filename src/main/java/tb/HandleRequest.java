@@ -25,7 +25,6 @@ public class HandleRequest {
     Peer np =
         new Peer(newPeer[0], Integer.parseInt(newPeer[1]), a + ":" + p, Helper.getFormattedDate());
     if (np.getAddress().equals(Helper.getPublicIP()) && np.getPort() != tb.App.UDP_PORT) {
-      // tb.App.log.Warn("Rogue peer: " + np.getAddress() + ":" + np.getPort());
 	  tb.App.log.Warn("Rogue peer: " + np.toString());
 	  return;
 	}
