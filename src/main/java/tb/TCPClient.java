@@ -181,16 +181,18 @@ public class TCPClient {
   }
 
   /* params: none
-   *   Returns the initial peers, <IP>:<PORT>, separated by newlines
+   *   Returns the list of all received snippets
    * returns: String
    */
   public static String getSnippets() {
     String returnString = ""; // initialize string to return
-    for (Snip s : tb.App.SNIPS) { // for each peer in the PEERS list
+	for (int i = 0; i < tb.App.SNIPS.size(); i++) {
+	  String end = "\n";
+	  if (i == tb.App.SNIPS.size() - 1) end = "";
       if (!s.getSourceAddress().equals("127.0.0.1")) {
-	    returnString += s.toString() + "\n";
+	    returnString += s.toString() + end;
 	  } else {
-		returnString += s.getTimestamp() + " " + s.getContent() + " " + Helper.getPublicIP() + ":" + tb.App.UDP_PORT + "\n";
+		returnString += s.getTimestamp() + " " + s.getContent() + " " + Helper.getPublicIP() + ":" + tb.App.UDP_PORT + end;
 	  }
     }
     // If there are no peers, return only a new line character
