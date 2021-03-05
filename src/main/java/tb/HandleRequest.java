@@ -70,7 +70,7 @@ public class HandleRequest {
       // Add new peer to peers
       tb.App.addToPeers(np);
     } catch (ArrayIndexOutOfBoundsException ai) {
-      tb.App.log.Warn("Illegal peer sent by: " + a + ":" + p);
+      tb.App.log.Warn("Illegal peer sent by: " + a + ":" + p + "--> " + n);
     }
   }
 }
