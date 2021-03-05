@@ -23,7 +23,7 @@ public class Request implements Runnable {
 
   @Override
   public void run() {
-    tb.App.log.Log("Request recv'd: " + this.VERB + " " + this.NOUN);
+    // tb.App.log.Log("Request recv'd: " + this.VERB + " " + this.NOUN);
     switch (this.VERB) {
       case "snip":
         tb.HandleRequest.HandleSnip(this.NOUN, this.ADDR, this.PORT);

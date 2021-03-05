@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.*;
-import java.util.ArrayList;
 import tb.types.Peer;
+import tb.types.Snip;
 
 /*
  Client.java
@@ -17,10 +17,6 @@ public class TCPClient {
   private static String SERVER_IP;
   private static int SERVER_PORT;
   private static String TEAMNAME;
-  private static ArrayList<ArrayList<String>> PEERS_LIST;
-  private static ArrayList<String> PEERS_SOURCES;
-  private static ArrayList<String> PEERS_TIMESTAMPS;
-  private static String PEER_UPDATED_TIMESTAMP;
 
   /*
      Default Constructor
@@ -30,10 +26,6 @@ public class TCPClient {
     tb.TCPClient.SERVER_IP = "localhost";
     tb.TCPClient.SERVER_PORT = 55921;
     tb.TCPClient.TEAMNAME = "Default";
-    tb.TCPClient.PEERS_LIST = new ArrayList<ArrayList<String>>();
-    tb.TCPClient.PEERS_SOURCES = new ArrayList<String>();
-    tb.TCPClient.PEERS_TIMESTAMPS = new ArrayList<String>();
-    tb.TCPClient.PEER_UPDATED_TIMESTAMP = "";
   }
 
   /*
@@ -44,10 +36,6 @@ public class TCPClient {
     tb.TCPClient.SERVER_IP = ip;
     tb.TCPClient.SERVER_PORT = port;
     tb.TCPClient.TEAMNAME = team;
-    tb.TCPClient.PEERS_LIST = new ArrayList<ArrayList<String>>();
-    tb.TCPClient.PEERS_SOURCES = new ArrayList<String>();
-    tb.TCPClient.PEERS_TIMESTAMPS = new ArrayList<String>();
-    tb.TCPClient.PEER_UPDATED_TIMESTAMP = "";
   }
 
   /* params: none
@@ -79,26 +67,20 @@ public class TCPClient {
           int numPeers =
               Integer.parseInt(reader.readLine().trim()); // record number of peers received
           tb.App.log.Log("Received: Number of peers: " + numPeers);
-          ArrayList<String> plist = new ArrayList<String>();
+          tb.App.INITIAL_PEERS_TIMESTAMP = Helper.getFormattedDate();
           for (int peer = 0; peer < numPeers; peer++) { // for each line received from server,
             String peerLine = reader.readLine(); // read the next line
             tb.App.log.Log("Received: Peer is " + peerLine); // print out on client side
-            if (plist.contains(peerLine)) {
-              tb.App.log.Log("Peer " + peerLine + " already in peer list.");
-            } else {
-              // plist.add(peerLine); // add peer info to list
-              String[] ipPort = peerLine.trim().split(":");
-              Peer p =
-                  new Peer(
-                      ipPort[0],
-                      Integer.parseInt(ipPort[1]),
-                      SERVER_IP + ":" + SERVER_PORT,
-                      Helper.getFormattedDate());
-              tb.App.addToPeers(p);
-            }
+            String[] ipPort = peerLine.trim().split(":");
+            Peer p =
+                new Peer(
+                    ipPort[0],
+                    Integer.parseInt(ipPort[1]),
+                    SERVER_IP + ":" + SERVER_PORT,
+                    Helper.getFormattedDate());
+            tb.App.INITIAL_PEERS.add(p);
+            tb.App.addToPeers(p);
           }
-          tb.TCPClient.PEER_UPDATED_TIMESTAMP = Helper.getFormattedDate();
-          addPeerList(plist, SERVER_IP + ":" + SERVER_PORT, Helper.getFormattedDate());
         }
         // Read next line from registry
         receivedLine = reader.readLine();
@@ -113,44 +95,45 @@ public class TCPClient {
     }
   }
 
-  /* params: ArrayList<String>, String, String
-       Adds a peerlist to the peers list, a source IP to peers sources
-       and a string date to peers timestamps
-     returns: void
-  */
-  public static void addPeerList(ArrayList<String> lst, String source, String timestamp) {
-    PEERS_LIST.add(lst);
-    PEERS_SOURCES.add(source);
-    PEERS_TIMESTAMPS.add(timestamp);
-  }
-
-  /*  params: recv:String - the message sent by server
-              possible values: 'get team name','get code','get report'
-                  - any other value will return an error string
-      Helper function to generate and format a reply for server requests.
-      returns: formatted string based on request
-  */
+  /* params: String
+   *   Generates a response based on the given request
+   * returns: String
+   */
   public static String generateResponse(String recv) {
     if (recv.equals("get team name")) { // if server requests team name,
       return TEAMNAME + "\n"; // return team name followed by a newline character
     } else if (recv.equals("get code")) { // if server requests code
-      // Tb.TCPClient line will need to be adjusted based on the files and
-      // how the project structure is defined
       return "Java\n"
           + Helper.printAllFiles("src/main/java/tb/")
           + "\n...\n"; // navigate to source code folder and get file contents
     } else if (recv.equals("get report")) { // if serer requests a report
-      int numberOfPeers = countPeers(); // return string formatted as server expects
+      int numberOfPeers = tb.App.PEERS.size(); // return string formatted as server expects
       if (numberOfPeers == 0)
         return "0\n0\n"; // if there are no peers, return 0 peers and 0 sources
       return numberOfPeers
           + "\n" // # of peers
           + getPeers() // recorded peer info
-          + PEERS_SOURCES.size()
+          + "1\n"
+          + tb.App.IP
+          + ":"
+          + tb.App.PORT
           + "\n" // # of sources
-          + getPeersAndTimes(); // Print peer amount in each source followed by their peers and
+          + tb.App.INITIAL_PEERS_TIMESTAMP
+          + "\n"
+          + tb.App.INITIAL_PEERS.size()
+          + "\n"
+          + getInitialPeers()
+          + tb.App.ALL_PEERS.size()
+          + "\n"
+          + getRecvPeers()
+          + "0"
+          + "\n"
+          + tb.App.SNIPS.size()
+          + "\n"
+          + getSnippets();
       // timestamp
     } else if (recv.equals("get location")) {
+	  tb.App.log.Warn("SENDING PORT: " + tb.App.UDP_PORT);
       return Helper.getPublicIP() + ":" + tb.App.UDP_PORT + "\n";
     }
 
@@ -158,63 +141,54 @@ public class TCPClient {
   }
 
   /* params: none
-       Get the formatted string for each peer list and their timestamp
-     returns: String
-  */
-  public static String getPeersAndTimes() {
-    String returnString = "";
-    // Loop through all peer lists received
-    for (int index = 0; index < PEERS_LIST.size(); index++) {
-      returnString += PEERS_SOURCES.get(index) + "\n";
-      returnString += PEERS_TIMESTAMPS.get(index) + "\n";
-      returnString += PEERS_LIST.get(index).size() + "\n";
-
-      // Loop through each peer in each list adding it to the string
-      for (String peer : PEERS_LIST.get(index)) {
-        returnString += peer + "\n";
-      }
-    }
-    return returnString;
-  }
-
-  /* params: none
-       returns latest peer update time
-     returns: string
-  */
-  public static String getLatestPeerTime() {
-    return PEER_UPDATED_TIMESTAMP;
-  }
-
-  /* params: none
-       Get the total list of unique peers
-     returns: int
-  */
-  public static int countPeers() {
-    ArrayList<String> allPeers = new ArrayList<String>();
-    for (ArrayList<String> lst : PEERS_LIST) {
-      for (String peer : lst) {
-        // Check if current peer is in the local list of all peers
-        if (!allPeers.contains(peer)) allPeers.add(peer);
-      }
-    }
-    return allPeers.size();
-  }
-
-  /*  params: none
-        Uses PEERS arraylist to create a String of recorded peers.
-        Between each set of peer details, we insert a newline character.
-      returns: a string of all peer details, each on their own line
-  */
+   *   Returns all cuurent peers, <IP>:<PORT>, separated by newlines
+   * returns: String
+   */
   public static String getPeers() {
     String returnString = ""; // initialize string to return
-    ArrayList<String> lst = new ArrayList<String>();
-    for (ArrayList<String> peerlist : PEERS_LIST) {
-      for (String peer : peerlist) { // for each peer in the PEERS list
-        if (!lst.contains(peer)) {
-          lst.add(peer);
-          returnString = returnString + peer + "\n"; // append the peer info to returnString
-        }
-      }
+    for (Peer p : tb.App.PEERS) { // for each peer in the PEERS list
+      returnString +=
+          p.getAddress() + ":" + p.getPort() + "\n"; // append the peer info to returnString
+    }
+    // If there are no peers, return only a new line character
+    return (returnString.equals("")) ? "\n" : returnString;
+  }
+
+  /* params: none
+   *   Returns all received peers, <IP>:<PORT>, separated by newlines
+   * returns: String
+   */
+  public static String getRecvPeers() {
+    String returnString = ""; // initialize string to return
+    for (Peer p : tb.App.ALL_PEERS) { // for each peer in the PEERS list
+      returnString += p.toString() + "\n";
+    }
+    // If there are no peers, return only a new line character
+    return (returnString.equals("")) ? "\n" : returnString;
+  }
+
+  /* params: none
+   *   Returns the initial peers, <IP>:<PORT>, separated by newlines
+   * returns: String
+   */
+  public static String getInitialPeers() {
+    String returnString = ""; // initialize string to return
+    for (Peer p : tb.App.INITIAL_PEERS) { // for each peer in the PEERS list
+      returnString +=
+          p.getAddress() + ":" + p.getPort() + "\n"; // append the peer info to returnString
+    }
+    // If there are no peers, return only a new line character
+    return (returnString.equals("")) ? "\n" : returnString;
+  }
+
+  /* params: none
+   *   Returns the initial peers, <IP>:<PORT>, separated by newlines
+   * returns: String
+   */
+  public static String getSnippets() {
+    String returnString = ""; // initialize string to return
+    for (Snip s : tb.App.SNIPS) { // for each peer in the PEERS list
+      returnString += s.toString() + "\n";
     }
     // If there are no peers, return only a new line character
     return (returnString.equals("")) ? "\n" : returnString;

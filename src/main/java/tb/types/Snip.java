@@ -13,6 +13,22 @@ public class Snip {
     this.TIMESTAMP = t;
   }
 
+  public String getContent() {
+    return this.CONTENT;
+  }
+
+  public String getSourceAddress() {
+    return this.SRC_ADDR;
+  }
+
+  public int getSourcePort() {
+    return this.SRC_PORT;
+  }
+
+  public int getTimestamp() {
+    return this.TIMESTAMP;
+  }
+
   public String toString() {
     return this.TIMESTAMP + " " + this.CONTENT + " " + this.SRC_ADDR + ":" + this.SRC_PORT;
   }

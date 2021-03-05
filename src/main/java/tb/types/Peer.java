@@ -36,6 +36,6 @@ public class Peer {
 
   // Override the toString method for the needed output
   public String toString() {
-    return this.ADDR + ":" + this.PORT + " " + this.SRC_ADDR + " " + this.TIMESTAMP;
+    return this.SRC_ADDR + " " + this.ADDR + ":" + this.PORT + " " + this.TIMESTAMP;
   }
 }

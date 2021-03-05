@@ -81,7 +81,7 @@
 			</execution>
 		  </executions>
 		  <configuration>
-			<mainClass>tb.App</mainClass>
+			<mainClass>tb.Main</mainClass>
 		  </configuration>
         </plugin>
       </plugins>

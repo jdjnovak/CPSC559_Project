@@ -4,9 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /*
- Logger.java
- - Contains the class that handles all CLI logging
-*/
+ * Logger.java
+ *   Contains the class that handles all CLI logging
+ */
 public class Logger {
   // ASCII CODES FOR COLOURS
   // Taken from:
@@ -25,9 +25,10 @@ public class Logger {
   private int DEBUG_LEVEL;
 
   /*
-   Default constructor
-     - Sets debug level to a default of one
-  */
+   * params: none
+   *
+   *
+   */
   public Logger() {
     this.DEBUG_LEVEL = 1;
   }
@@ -51,7 +52,7 @@ public class Logger {
   public String printPrefix() {
     SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     Date date = new Date();
-    return "[" + fmt.format(date) + "]";
+    return fmt.format(date);
   }
 
   /* params: string
@@ -60,7 +61,18 @@ public class Logger {
   */
   public void Log(String message) {
     if (this.DEBUG_LEVEL > 1)
-      System.out.println(ANSI_BLUE + printPrefix() + ANSI_GREEN + "(LOG) " + ANSI_RESET + message);
+      System.out.println(
+          "["
+              + ANSI_BLUE
+              + printPrefix()
+              + ANSI_RESET
+              + "]("
+              + ANSI_GREEN
+              + "LOG"
+              + ANSI_RESET
+              + ") "
+              + ANSI_RESET
+              + message);
   }
 
   /* params: string
@@ -70,7 +82,18 @@ public class Logger {
   public void Debug(String message) {
     if (this.DEBUG_LEVEL > 1)
       System.out.println(
-          ANSI_BLUE + printPrefix() + ANSI_GREEN + "(DEBUG) " + ANSI_CYAN + message + ANSI_RESET);
+          "["
+              + ANSI_BLUE
+              + printPrefix()
+              + ANSI_RESET
+              + "]("
+              + ANSI_GREEN
+              + "DEBUG"
+              + ANSI_RESET
+              + ") "
+              + ANSI_CYAN
+              + message
+              + ANSI_RESET);
   }
 
   /* params: string
@@ -80,7 +103,18 @@ public class Logger {
   public void Warn(String message) {
     if (this.DEBUG_LEVEL > 0)
       System.out.println(
-          ANSI_BLUE + printPrefix() + ANSI_GREEN + "(WARN) " + ANSI_RED + message + ANSI_RESET);
+          "["
+              + ANSI_BLUE
+              + printPrefix()
+              + ANSI_RESET
+              + "]("
+              + ANSI_GREEN
+              + "WARN"
+              + ANSI_RESET
+              + ") "
+              + ANSI_RED
+              + message
+              + ANSI_RESET);
   }
 
   /* params: string
@@ -90,10 +124,15 @@ public class Logger {
   public void Prompt(String message) {
     if (this.DEBUG_LEVEL > 0)
       System.out.print(
-          ANSI_BLUE
+          "["
+              + ANSI_BLUE
               + printPrefix()
+              + ANSI_RESET
+              + "]("
               + ANSI_GREEN
-              + "(PROMPT) "
+              + "PROMPT"
+              + ANSI_RESET
+              + ") "
               + ANSI_YELLOW
               + message
               + ANSI_RESET);
