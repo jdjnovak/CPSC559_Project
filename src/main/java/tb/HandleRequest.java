@@ -47,6 +47,10 @@ public class HandleRequest {
     try {
       String[] newPeer = n.trim().split(":");
 
+      if (newPeer[0].split(".")[0].equals("192") && newPeer[0].split(".")[1].equals("168")) {
+        return;
+      }
+
       // Create new peer
       Peer np =
           new Peer(
@@ -56,9 +60,8 @@ public class HandleRequest {
       if (np.getAddress().equals(Helper.getPublicIP()) && np.getPort() != tb.App.UDP_PORT) {
         tb.App.log.Warn(
             "Rogue peer: "
-                + np
-                    .toString()); // Warn if my same IP is sending peers (only issue on home
-                                  // network)
+                + np.toString()); // Warn if my same IP is sending peers (only issue on home
+        // network)
       }
 
       // Add new peer to peers
