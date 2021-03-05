@@ -26,7 +26,7 @@ public class Request implements Runnable {
     tb.App.log.Log("Request recv'd: " + this.VERB + " " + this.NOUN);
     switch (this.VERB) {
       case "snip":
-        tb.HandleRequest.HandleSnip(this.NOUN);
+        tb.HandleRequest.HandleSnip(this.NOUN, this.ADDR, this.PORT);
         break;
       case "stop":
         tb.HandleRequest.HandleStop();

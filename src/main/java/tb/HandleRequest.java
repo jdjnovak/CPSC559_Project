@@ -2,6 +2,7 @@ package tb;
 
 import java.net.*;
 import tb.types.Peer;
+import tb.types.Snip;
 
 public class HandleRequest {
   /*
@@ -17,12 +18,14 @@ public class HandleRequest {
   }
   */
 
-  public static void HandleSnip(String n) {
+  public static void HandleSnip(String n, String a, int p) {
     String[] snipSplit = n.split(" ");
     int currTS = tb.App.getSnipTimestamp();
     if (Integer.parseInt(snipSplit[0]) > currTS) {
       tb.App.setSnipTimestamp(Integer.parseInt(snipSplit[0]));
     }
+    Snip newSnip = new Snip(snipSplit[1], a, p, Integer.parseInt(snipSplit[0]));
+    tb.App.addSnip(newSnip);
   }
 
   public static void HandleStop() {

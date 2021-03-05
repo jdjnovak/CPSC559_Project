@@ -7,18 +7,22 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import tb.logging.Logger;
 import tb.types.Peer;
+import tb.types.Snip;
 
 public class App {
 
   // static String IP = "localhost";
   // static final int PORT = 55921;
-  static String IP = "34.212.129.196";
-  static final int PORT = 44444;
+  // static String IP = "34.212.129.196";
+  // static final int PORT = 44444;
+  static String IP = "136.159.5.22";
+  static final int PORT = 55921;
   static final int UDP_PORT = 36636;
   static final String TEAMNAME = "Team Thunder Badger";
 
   static CopyOnWriteArrayList<Peer> PEERS = new CopyOnWriteArrayList<Peer>();
   static CopyOnWriteArrayList<Peer> ALL_PEERS = new CopyOnWriteArrayList<Peer>();
+  static CopyOnWriteArrayList<Snip> SNIPS = new CopyOnWriteArrayList<Snip>();
   static int SNIP_TIMESTAMP = 0; // For snip timings
 
   // Thread globals
@@ -60,6 +64,10 @@ public class App {
 
   public static int getUDPPort() {
     return UDP_PORT;
+  }
+
+  public static void addSnip(Snip s) {
+    SNIPS.add(s);
   }
 
   public static void addToPeers(Peer p) {

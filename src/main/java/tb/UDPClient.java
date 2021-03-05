@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import tb.types.Peer;
 import tb.types.Request;
+import tb.types.Snip;
 
 public class UDPClient implements Runnable {
   // private static String IP;
@@ -105,9 +106,14 @@ public class UDPClient implements Runnable {
                       }
                     }
                   } else if (command.equalsIgnoreCase("gimme")) {
-                    tb.App.log.Log("(TESTING) Current Peers:");
+                    tb.App.log.Debug("Current Peers:");
                     for (Peer p : tb.App.PEERS) {
-                      tb.App.log.Log(p.toString());
+                      tb.App.log.Debug(p.toString());
+                    }
+                  } else if (command.equalsIgnoreCase("snops")) {
+                    tb.App.log.Debug("Current Snips:");
+                    for (Snip s : tb.App.SNIPS) {
+                      tb.App.log.Debug(s.toString());
                     }
                   }
                 }
