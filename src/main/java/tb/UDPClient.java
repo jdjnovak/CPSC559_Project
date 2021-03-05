@@ -27,7 +27,7 @@ public class UDPClient implements Runnable {
                 + ":"
                 + pack.getPort());
         String[] parsed = parsePacket(req_string);
-        if (parsed[0].equals("stop")) break;
+        if (req_string.startsWith("stop")) break;
         tb.App.executor.execute(
             new Request(
                 parsed[0], parsed[1], pack.getAddress().toString().split("/")[1], pack.getPort()));
