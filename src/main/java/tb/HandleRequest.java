@@ -25,7 +25,7 @@ public class HandleRequest {
     }
 
     Peer np = new Peer(a, p, a + ":" + p, Helper.getFormattedDate());
-    tb.App.ALL_PEERS.add(np);
+    tb.App.addToPeers(np);
 
     // Create new snip and add it to list
     Snip newSnip =
@@ -50,7 +50,7 @@ public class HandleRequest {
     try {
       String[] newPeer = n.trim().split(":");
 
-      if (newPeer[0].split(".")[0].equals("192") && newPeer[0].split(".")[1].equals("168")) {
+      if (newPeer[0].startsWith("192.168")) {
         return;
       }
 
