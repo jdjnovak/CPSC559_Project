@@ -1,0 +1,8 @@
+# Ignore class files
+*.class
+
+# Ignore any zip files
+*.zip
+
+# Ignore build files
+target/
