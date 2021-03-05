@@ -24,6 +24,9 @@ public class HandleRequest {
       tb.App.setSnipTimestamp(Integer.parseInt(snipSplit[0]));
     }
 
+    Peer np = new Peer(a, p, a + ":" + p, Helper.getFormattedDate());
+    tb.App.ALL_PEERS.add(np);
+
     // Create new snip and add it to list
     Snip newSnip =
         new Snip(n.substring(snipSplit[0].length()).trim(), a, p, Integer.parseInt(snipSplit[0]));
