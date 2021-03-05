@@ -126,6 +126,7 @@ public class TCPClient {
           + "\n"
           + getRecvPeers()
           + tb.App.SENT_PEERS.size()
+          + "\n"
           + getSentPeers()
           + tb.App.SNIPS.size()
           + "\n"
