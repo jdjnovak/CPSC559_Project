@@ -189,10 +189,10 @@ public class TCPClient {
 	for (int i = 0; i < tb.App.SNIPS.size(); i++) {
 	  String end = "\n";
 	  if (i == tb.App.SNIPS.size() - 1) end = "";
-      if (!s.getSourceAddress().equals("127.0.0.1")) {
-	    returnString += s.toString() + end;
+      if (!tb.App.SNIPS.get(i).getSourceAddress().equals("127.0.0.1")) {
+	    returnString += tb.App.SNIPS.get(i).toString() + end;
 	  } else {
-		returnString += s.getTimestamp() + " " + s.getContent() + " " + Helper.getPublicIP() + ":" + tb.App.UDP_PORT + end;
+		returnString += tb.App.SNIPS.get(i).getTimestamp() + " " + tb.App.SNIPS.get(i).getContent() + " " + Helper.getPublicIP() + ":" + tb.App.UDP_PORT + end;
 	  }
     }
     // If there are no peers, return only a new line character
