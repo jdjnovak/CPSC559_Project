@@ -5,7 +5,6 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.*;
 import tb.types.Peer;
-import tb.types.Snip;
 
 /*
  Client.java
@@ -126,13 +125,13 @@ public class TCPClient {
           + tb.App.ALL_PEERS.size()
           + "\n"
           + getRecvPeers()
-		  + tb.App.SENT_PEERS.size()
-		  + getSentPeers()
+          + tb.App.SENT_PEERS.size()
+          + getSentPeers()
           + tb.App.SNIPS.size()
           + "\n"
           + getSnippets();
     } else if (recv.equals("get location")) {
-	  tb.App.log.Warn("SENDING PORT: " + tb.App.UDP_PORT);
+      tb.App.log.Warn("SENDING PORT: " + tb.App.UDP_PORT);
       return Helper.getPublicIP() + ":" + tb.App.UDP_PORT + "\n";
     }
 
@@ -186,19 +185,27 @@ public class TCPClient {
    */
   public static String getSnippets() {
     String returnString = ""; // initialize string to return
-	for (int i = 0; i < tb.App.SNIPS.size(); i++) {
-	  String end = "\n";
-	  if (i == tb.App.SNIPS.size() - 1) end = "";
+    for (int i = 0; i < tb.App.SNIPS.size(); i++) {
+      String end = "\n";
+      if (i == tb.App.SNIPS.size() - 1) end = "";
       if (!tb.App.SNIPS.get(i).getSourceAddress().equals("127.0.0.1")) {
-	    returnString += tb.App.SNIPS.get(i).toString() + end;
-	  } else {
-		returnString += tb.App.SNIPS.get(i).getTimestamp() + " " + tb.App.SNIPS.get(i).getContent() + " " + Helper.getPublicIP() + ":" + tb.App.UDP_PORT + end;
-	  }
+        returnString += tb.App.SNIPS.get(i).toString() + end;
+      } else {
+        returnString +=
+            tb.App.SNIPS.get(i).getTimestamp()
+                + " "
+                + tb.App.SNIPS.get(i).getContent()
+                + " "
+                + Helper.getPublicIP()
+                + ":"
+                + tb.App.UDP_PORT
+                + end;
+      }
     }
     // If there are no peers, return only a new line character
     return (returnString.equals("")) ? "\n" : returnString;
   }
-   
+
   /* params: none
    *   Returns the peers sent via PeerClient, <IP>:<PORT>, separated by newlines
    * returns: String

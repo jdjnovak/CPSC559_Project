@@ -1,9 +1,8 @@
 package tb;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.net.DatagramSocket;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -51,7 +50,7 @@ public class App {
     log.Log("Starting logger with debug level " + log.getDebugLevel());
 
     try {
-	  tb.App.SOCKET = new DatagramSocket(UDP_PORT);
+      tb.App.SOCKET = new DatagramSocket(UDP_PORT);
       // Begin with TCP client for peer onboarding
       TCPClient client = new TCPClient(IP, PORT, TEAMNAME);
       client.Start();
@@ -79,9 +78,9 @@ public class App {
 
       log.Log("Shutting down.");
 
-    // } catch (IOException io) {
+      // } catch (IOException io) {
       // log.Warn("App - An IO exception occured");
-	} catch (SocketException se) {
+    } catch (SocketException se) {
       log.Warn("App - A socket exception occured");
     } catch (Exception e) {
       log.Warn("App - An exception occured");
@@ -96,6 +95,10 @@ public class App {
     if (!checkInSnips(s)) {
       SNIPS.add(s);
     }
+  }
+
+  public static void addToSentPeers(String s) {
+    SENT_PEERS.add(s);
   }
 
   public static void addToPeers(Peer p) {

@@ -36,8 +36,24 @@ public class PeerClient implements Runnable {
             "peer" + tb.App.PEERS.get(pos).getAddress() + ":" + tb.App.PEERS.get(pos).getPort();
         DatagramPacket pk =
             new DatagramPacket(p_info.getBytes(), p_info.getBytes().length, addr, p.getPort());
-		tb.App.log.Log("SRC: " + tb.App.SOCKET.getLocalPort() + "\tDEST : " + pk.getAddress().toString() + ":" + pk.getPort());
-		tb.App.SENT_PEERS.add(p.getAddress() + ":" + p.getPort() + " " + tb.App.PEERS.get(pos).getAddress() + ":" + tb.App.PEERS.get(pos).getPort() + Helper.getFormattedDate() + "\n");
+        tb.App.log.Log(
+            "SRC: "
+                + tb.App.SOCKET.getLocalPort()
+                + "\tDEST : "
+                + pk.getAddress().toString()
+                + ":"
+                + pk.getPort());
+        tb.App.addToSentPeers(
+            p.getAddress()
+                + ":"
+                + p.getPort()
+                + " "
+                + tb.App.PEERS.get(pos).getAddress()
+                + ":"
+                + tb.App.PEERS.get(pos).getPort()
+                + " "
+                + Helper.getFormattedDate()
+                + "\n");
         tb.App.SOCKET.send(pk);
       } catch (UnknownHostException uh) {
         tb.App.log.Warn(
