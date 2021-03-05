@@ -34,12 +34,14 @@ public class Logger {
   }
 
   /*
-   Parameterized Constructor
-     - Pass in a level to set the logger to
-     - Levels:
-        0 : None
-        1 : Errors/Exceptions
-        2 : All
+   * params: 
+   * Parameterized Constructor
+   * - Pass in a level to set the logger to
+   * - Levels:
+   *   0 : None
+   *   1 : Errors/Exceptions
+   *   1 : Errors/Exceptions
+   *   3 : All
   */
   public Logger(int level) {
     this.DEBUG_LEVEL = level;

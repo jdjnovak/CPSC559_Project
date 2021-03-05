@@ -131,7 +131,6 @@ public class TCPClient {
           + tb.App.SNIPS.size()
           + "\n"
           + getSnippets();
-      // timestamp
     } else if (recv.equals("get location")) {
 	  tb.App.log.Warn("SENDING PORT: " + tb.App.UDP_PORT);
       return Helper.getPublicIP() + ":" + tb.App.UDP_PORT + "\n";
@@ -188,7 +187,11 @@ public class TCPClient {
   public static String getSnippets() {
     String returnString = ""; // initialize string to return
     for (Snip s : tb.App.SNIPS) { // for each peer in the PEERS list
-      returnString += s.toString() + "\n";
+      if (!s.getSourceAddress().equals("127.0.0.1")) {
+	    returnString += s.toString() + "\n";
+	  } else {
+		returnString += s.getTimestamp() + " " + s.getContent() + " " + Helper.getPublicIP() + ":" + tb.App.UDP_PORT + "\n";
+	  }
     }
     // If there are no peers, return only a new line character
     return (returnString.equals("")) ? "\n" : returnString;
