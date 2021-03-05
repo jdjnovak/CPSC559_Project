@@ -44,20 +44,27 @@ public class HandleRequest {
    */
   public static void HandlePeer(String n, String a, int p) {
     // Split peer by its colon
-    String[] newPeer = n.trim().split(":");
+    try {
+      String[] newPeer = n.trim().split(":");
 
-    // Create new peer
-    Peer np =
-        new Peer(newPeer[0], Integer.parseInt(newPeer[1]), a + ":" + p, Helper.getFormattedDate());
+      // Create new peer
+      Peer np =
+          new Peer(
+              newPeer[0], Integer.parseInt(newPeer[1]), a + ":" + p, Helper.getFormattedDate());
 
-    // Check for issue (mostly on home networks)
-    if (np.getAddress().equals(Helper.getPublicIP()) && np.getPort() != tb.App.UDP_PORT) {
-      tb.App.log.Warn(
-          "Rogue peer: "
-              + np.toString()); // Warn if my same IP is sending peers (only issue on home network)
+      // Check for issue (mostly on home networks)
+      if (np.getAddress().equals(Helper.getPublicIP()) && np.getPort() != tb.App.UDP_PORT) {
+        tb.App.log.Warn(
+            "Rogue peer: "
+                + np
+                    .toString()); // Warn if my same IP is sending peers (only issue on home
+                                  // network)
+      }
+
+      // Add new peer to peers
+      tb.App.addToPeers(np);
+    } catch (ArrayIndexOutOfBoundsException ai) {
+      tb.App.log.Warn("Illegal peer sent by: " + a + ":" + p);
     }
-
-    // Add new peer to peers
-    tb.App.addToPeers(np);
   }
 }
