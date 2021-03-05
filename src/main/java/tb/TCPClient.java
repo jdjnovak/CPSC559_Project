@@ -188,7 +188,7 @@ public class TCPClient {
     String returnString = ""; // initialize string to return
     for (int i = 0; i < tb.App.SNIPS.size(); i++) {
       String end = "\n";
-      if (i == tb.App.SNIPS.size() - 1) end = "";
+      // if (i == tb.App.SNIPS.size() - 1) end = "";
       if (!tb.App.SNIPS.get(i).getSourceAddress().equals("127.0.0.1")) {
         returnString += tb.App.SNIPS.get(i).toString() + end;
       } else {
