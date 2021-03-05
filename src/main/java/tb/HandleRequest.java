@@ -18,7 +18,6 @@ public class HandleRequest {
   */
 
   public static void HandleSnip(String n) {
-    tb.App.log.Log("SNIP: " + n);
     String[] snipSplit = n.split(" ");
     int currTS = tb.App.getSnipTimestamp();
     if (Integer.parseInt(snipSplit[0]) > currTS) {
@@ -31,7 +30,6 @@ public class HandleRequest {
   }
 
   public static void HandlePeer(String n, String a, int p) {
-    // tb.App.log.Log("PEER: " + n);
     String[] newPeer = n.split(":");
     Peer np =
         new Peer(newPeer[0], Integer.parseInt(newPeer[1]), a + ":" + p, Helper.getFormattedDate());

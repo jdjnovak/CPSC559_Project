@@ -64,6 +64,16 @@ public class Logger {
   }
 
   /* params: string
+      Prints a debug message to the console
+    returns: void
+  */
+  public void Debug(String message) {
+    if (this.DEBUG_LEVEL > 1)
+      System.out.println(
+          ANSI_BLUE + printPrefix() + ANSI_GREEN + "(DEBUG) " + ANSI_CYAN + message + ANSI_RESET);
+  }
+
+  /* params: string
       Prints a warning log message to the console
     returns: string
   */

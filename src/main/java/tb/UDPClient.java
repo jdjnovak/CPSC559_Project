@@ -36,7 +36,7 @@ public class UDPClient implements Runnable {
       try {
         pack = new DatagramPacket(recv, recv.length);
         tb.UDPClient.SOCKET.receive(pack);
-        tb.App.log.Log("DEBUG - pkt from " + pack.getAddress().toString());
+        tb.App.log.Debug("Packet from " + pack.getAddress().toString());
 
         String req_string = Helper.data(recv);
         String[] parsed = parsePacket(req_string);
@@ -77,12 +77,18 @@ public class UDPClient implements Runnable {
                 while (!getDone()) {
                   String command = keyboard.nextLine().trim();
                   if (command.equalsIgnoreCase("snip")) {
+
                     tb.App.log.Prompt("Enter a snip: ");
                     String content = keyboard.nextLine().trim();
-                    // Send throughout the peers with the same DatagramSocket
+
+                    tb.App.incrementSnipTimestamp();
+                    tb.App.log.Debug("Timestamp incremented to: " + tb.App.getSnipTimestamp());
+
                     String total_content = "snip" + tb.App.getSnipTimestamp() + " " + content;
                     byte[] buf = total_content.getBytes();
+
                     tb.App.log.Log("Sending snip to peers: " + content);
+                    // Send throughout the peers with the same DatagramSocket
                     for (Peer p : tb.App.PEERS) {
                       try {
                         InetAddress peerIp = InetAddress.getByName(p.getAddress());
@@ -98,8 +104,6 @@ public class UDPClient implements Runnable {
                             "Error: createCommandLineThread() - IO Exception while sending snip");
                       }
                     }
-                    tb.App.incrementSnipTimestamp();
-                    tb.App.log.Log("Timestamp incremented to: " + tb.App.getSnipTimestamp());
                   } else if (command.equalsIgnoreCase("gimme")) {
                     tb.App.log.Log("(TESTING) Current Peers:");
                     for (Peer p : tb.App.PEERS) {
@@ -114,7 +118,6 @@ public class UDPClient implements Runnable {
 
   public static void sendPacket(DatagramPacket pk) {
     try {
-      tb.App.log.Log("Sending packet: " + pk.getAddress().toString());
       SOCKET.send(pk);
     } catch (IOException io) {
       tb.App.log.Warn("Error: UDPClient - sendPacket - IOException occured");
