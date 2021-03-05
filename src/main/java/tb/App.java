@@ -16,10 +16,10 @@ public class App {
 
   // static String IP = "localhost";
   // static final int PORT = 55921;
-  static String IP = "34.212.129.196";
-  static final int PORT = 44444;
-  // static final String IP = "136.159.5.22";
-  // static final int PORT = 55921;
+  // static String IP = "34.212.129.196";
+  // static final int PORT = 44444;
+  static final String IP = "136.159.5.22";
+  static final int PORT = 55921;
   static final String TEAMNAME = "Team Thunder Badger";
 
   static ArrayList<Peer> INITIAL_PEERS = new ArrayList<Peer>();
