@@ -25,6 +25,7 @@ public class App {
   static ArrayList<Peer> INITIAL_PEERS = new ArrayList<Peer>();
   static String INITIAL_PEERS_TIMESTAMP;
 
+  static CopyOnWriteArrayList<String> SENT_PEERS = new CopyOnWriteArrayList<String>();
   static CopyOnWriteArrayList<Peer> PEERS = new CopyOnWriteArrayList<Peer>();
   static CopyOnWriteArrayList<Peer> ALL_PEERS = new CopyOnWriteArrayList<Peer>();
   static CopyOnWriteArrayList<Snip> SNIPS = new CopyOnWriteArrayList<Snip>();

@@ -126,7 +126,8 @@ public class TCPClient {
           + tb.App.ALL_PEERS.size()
           + "\n"
           + getRecvPeers()
-          + "0"
+		  + tb.App.SENT_PEERS.size()
+		  + getSentPeers()
           + "\n"
           + tb.App.SNIPS.size()
           + "\n"
@@ -189,6 +190,19 @@ public class TCPClient {
     String returnString = ""; // initialize string to return
     for (Snip s : tb.App.SNIPS) { // for each peer in the PEERS list
       returnString += s.toString() + "\n";
+    }
+    // If there are no peers, return only a new line character
+    return (returnString.equals("")) ? "\n" : returnString;
+  }
+   
+  /* params: none
+   *   Returns the initial peers, <IP>:<PORT>, separated by newlines
+   * returns: String
+   */
+  public static String getSentPeers() {
+    String returnString = ""; // initialize string to return
+    for (String s : tb.App.SENT_PEERS) { // for each peer in the PEERS list
+      returnString += s;
     }
     // If there are no peers, return only a new line character
     return (returnString.equals("")) ? "\n" : returnString;
