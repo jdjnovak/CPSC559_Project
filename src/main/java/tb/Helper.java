@@ -7,8 +7,8 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.TimeZone;
 import java.util.Scanner;
+import java.util.TimeZone;
 
 /*
  * Helper.java
@@ -23,10 +23,22 @@ public class Helper {
   public static String getFormattedDate() {
     // Generate the necessary format for the date YYYY-MM-DD HH:MM:SS
     SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	fmt.setTimeZone(TimeZone.getTimeZone("UTC"));
+    fmt.setTimeZone(TimeZone.getTimeZone("UTC"));
     Date date = new Date();
     // Apply format to current date/time and return
     return fmt.format(date);
+  }
+
+  public static boolean checkTimeout(String curr, String ts) {
+    int currMin = Integer.parseInt(curr.split(" ")[1].split(":")[1]);
+    int currSec = Integer.parseInt(curr.split(" ")[1].split(":")[2]);
+    int tsMin = Integer.parseInt(ts.split(" ")[1].split(":")[1]);
+    int tsSec = Integer.parseInt(ts.split(" ")[1].split(":")[2]);
+
+    double currTotal = (double) currMin + (double) (currSec / 60);
+    double tsTotal = (double) tsMin + (double) (tsSec / 60);
+
+    return currTotal >= tsTotal + 3.0;
   }
 
   /* param: a path to the wanted directory

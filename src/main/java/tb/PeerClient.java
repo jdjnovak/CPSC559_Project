@@ -29,6 +29,17 @@ public class PeerClient implements Runnable {
     int pos = (int) (Math.random() * tb.App.PEERS.size());
     for (Peer p : tb.App.PEERS) {
       if (p.getAddress().equals(Helper.getPublicIP())) continue; // Don't send peers to self
+
+      // Check if peer is past timeout
+      if (Helper.checkTimeout(Helper.getFormattedDate(), p.getTimestamp())) {
+        tb.App.log.Log(
+            "<TIMEOUT> Peer "
+                + p.getAddress()
+                + ":"
+                + p.getPort()
+                + " is older than three minutes");
+        continue;
+      }
       try {
         InetAddress addr = InetAddress.getByName(p.getAddress());
         String p_info =
