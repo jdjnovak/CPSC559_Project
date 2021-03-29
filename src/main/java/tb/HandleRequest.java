@@ -44,9 +44,9 @@ public class HandleRequest {
     String ackstring = "ack" + tb.App.TEAMNAME;
 
     try {
+      InetAddress address = InetAddress.getByName(a.split("/")[1]);
       DatagramPacket pack =
-          new DatagramPacket(
-              ackstring.getBytes(), ackstring.getBytes().length, InetAddress.getByName(a), p);
+          new DatagramPacket(ackstring.getBytes(), ackstring.getBytes().length, address, p);
     } catch (UnknownHostException uh) {
       tb.App.log.Warn("Unknown host sending stop: " + a);
     }
