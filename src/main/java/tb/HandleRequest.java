@@ -43,10 +43,12 @@ public class HandleRequest {
   public static void HandleStop(String a, int p) {
     String ackstring = "ack" + tb.App.TEAMNAME;
 
+    tb.App.log.Log("Sending " + ackstring + " to " + a + ":" + p);
+
     try {
-      InetAddress address = InetAddress.getByName(a.split("/")[1]);
       DatagramPacket pack =
-          new DatagramPacket(ackstring.getBytes(), ackstring.getBytes().length, address, p);
+          new DatagramPacket(
+              ackstring.getBytes(), ackstring.getBytes().length, InetAddress.getByName(a), p);
     } catch (UnknownHostException uh) {
       tb.App.log.Warn("Unknown host sending stop: " + a);
     }

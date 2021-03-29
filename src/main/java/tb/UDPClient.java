@@ -32,7 +32,7 @@ public class UDPClient implements Runnable {
         String[] parsed = parsePacket(req_string);
         if (req_string.startsWith("stop")) {
           tb.App.log.Log("Received a stop packet");
-          this.stopIP = pack.getAddress().toString();
+          this.stopIP = pack.getAddress().toString().split("/")[1];
           this.stopPort = pack.getPort();
           break;
         }
