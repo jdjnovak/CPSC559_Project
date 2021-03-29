@@ -1,5 +1,6 @@
 package tb;
 
+import java.io.IOException;
 import java.net.*;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
@@ -49,8 +50,11 @@ public class HandleRequest {
       DatagramPacket pack =
           new DatagramPacket(
               ackstring.getBytes(), ackstring.getBytes().length, InetAddress.getByName(a), p);
+      tb.App.SOCKET.send(pack);
     } catch (UnknownHostException uh) {
       tb.App.log.Warn("Unknown host sending stop: " + a);
+    } catch (IOException io) {
+      tb.App.log.Warn("An IOException occured in HandleRequest.");
     }
 
     tb.App.STOP = true;
