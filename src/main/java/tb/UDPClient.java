@@ -7,6 +7,9 @@ import tb.types.Request;
 
 public class UDPClient implements Runnable {
 
+  private String stopIP = "";
+  private int stopPort = -1;
+
   public UDPClient() throws SocketException {}
 
   @Override
@@ -27,7 +30,12 @@ public class UDPClient implements Runnable {
                 + ":"
                 + pack.getPort());
         String[] parsed = parsePacket(req_string);
-        if (req_string.startsWith("stop")) break;
+        if (req_string.startsWith("stop")) {
+          tb.App.log.Log("Received a stop packet");
+          this.stopIP = pack.getAddress().toString();
+          this.stopPort = pack.getPort();
+          break;
+        }
         tb.App.executor.execute(
             new Request(
                 parsed[0], parsed[1], pack.getAddress().toString().split("/")[1], pack.getPort()));
@@ -38,7 +46,8 @@ public class UDPClient implements Runnable {
     } catch (IOException io) {
       tb.App.log.Warn("An IO exception has occured.");
     }
-    HandleRequest.HandleStop();
+    HandleRequest.HandleStop(stopIP, stopPort);
+
     tb.App.log.Log("Shutting down UDP Client");
   }
 

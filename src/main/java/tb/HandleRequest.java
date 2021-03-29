@@ -1,6 +1,9 @@
 package tb;
 
 import java.net.*;
+import java.net.DatagramPacket;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import tb.types.Peer;
 import tb.types.Snip;
 
@@ -37,7 +40,17 @@ public class HandleRequest {
    *   Sets the global stop variable to true
    * returns: void
    */
-  public static void HandleStop() {
+  public static void HandleStop(String a, int p) {
+    String ackstring = "ack" + tb.App.TEAMNAME;
+
+    try {
+      DatagramPacket pack =
+          new DatagramPacket(
+              ackstring.getBytes(), ackstring.getBytes().length, InetAddress.getByName(a), p);
+    } catch (UnknownHostException uh) {
+      tb.App.log.Warn("Unknown host sending stop: " + a);
+    }
+
     tb.App.STOP = true;
   }
 

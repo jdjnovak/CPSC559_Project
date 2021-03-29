@@ -44,9 +44,6 @@ public class Request implements Runnable {
       case "snip":
         tb.HandleRequest.HandleSnip(this.NOUN, this.ADDR, this.PORT);
         break;
-      case "stop":
-        tb.HandleRequest.HandleStop();
-        break;
       case "peer":
         tb.HandleRequest.HandlePeer(this.NOUN, this.ADDR, this.PORT);
         break;
