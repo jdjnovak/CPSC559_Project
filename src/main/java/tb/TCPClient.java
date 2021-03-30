@@ -216,6 +216,6 @@ public class TCPClient {
       returnString += s;
     }
     // If there are no peers, return only a new line character
-    return (returnString.equals("")) ? "\n" : returnString;
+    return returnString;
   }
 }
