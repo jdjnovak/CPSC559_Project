@@ -42,14 +42,18 @@ public class HandleRequest {
    * returns: void
    */
   public static void HandleStop(String a, int p) {
+    // Create string to be sent
     String ackstring = "ack" + tb.App.TEAMNAME;
 
     tb.App.log.Log("Sending " + ackstring + " to " + a + ":" + p);
 
     try {
+      // Create datagram with the bytes of the acknownledgment string
       DatagramPacket pack =
           new DatagramPacket(
               ackstring.getBytes(), ackstring.getBytes().length, InetAddress.getByName(a), p);
+
+      // Send datagram
       tb.App.SOCKET.send(pack);
     } catch (UnknownHostException uh) {
       tb.App.log.Warn("Unknown host sending stop: " + a);
@@ -57,6 +61,7 @@ public class HandleRequest {
       tb.App.log.Warn("An IOException occured in HandleRequest.");
     }
 
+    // Signal rest of the app to stop
     tb.App.STOP = true;
   }
 
